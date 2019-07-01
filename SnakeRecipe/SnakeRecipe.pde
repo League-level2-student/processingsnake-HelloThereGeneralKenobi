@@ -54,11 +54,12 @@ void setup() {
 
 
   // 10. initialize your head to a new segment.
-head = new Segment();
+head = new Segment(250,250);
 
   // 11. Use the frameRate(int rate) method to set the rate to 20.
   
   int rate = 20;
+
 }
 
 
@@ -69,6 +70,7 @@ void draw() {
 
   //12. Call the manageTail, drawFood, drawSnake, move, and collision methods.
   manageTail();
+  drawFood();
   drawSnake();
   move();
   collision();
@@ -85,7 +87,7 @@ void drawFood() {
 //14. Draw the snake head (use a 10 by 10 rectangle)
 
 void drawSnake() {
-rect(x,y,10,10);
+rect(head.x,head.y,10,10);
 
   //test your code
 }
@@ -97,31 +99,46 @@ void move() {
 
   // 16. Using a switch statement, make your snake head move by 10 pixels in the correct direction.
   //This is an incomplete switch statement:
-  /*
-  switch(dir) {
+  
+  switch(direction) {
   case "up":
-    // move head up here 
+    head.y = head.y - 5;
     break;
   case "down":
-    // move head down here 
+    head.y = head.y + 5; 
     break;
   case "left":
-   // figure it out 
+    head.x = head.x - 5;
     break;
   case "right":
-    // mystery code goes here 
+    head.x = head.x + 5; 
     break;
   }
-  */
+  
 
 
   // 17. Call the checkBoundaries method to make sure the snake head doesn't go off the screen.
+  checkBoundaries();
 }
 
 
 // 18. Complete the keyPressed method below. Use if statements to set your direction variable depending on what key is pressed.
 
 void keyPressed() {
+  if (key == CODED) {
+    if (keyCode == UP) {
+       direction = "up";
+    } 
+    if (keyCode == DOWN) {
+       direction = "down";
+    } 
+    if (keyCode == LEFT) {
+       direction = "left";
+    } 
+    if (keyCode == RIGHT) {
+       direction = "right";
+    } 
+  }
 }
 
 
@@ -129,6 +146,19 @@ void keyPressed() {
 // 19. check if your head is out of bounds (teleport your snake head to the other side).
 
 void checkBoundaries() {
+  if(head.x > 500) {
+    head.x = 1;
+  }
+  if(head.y > 500) {
+    head.y = 1;
+  }
+  if(head.x < 0) {
+    head.x = 499;
+  }
+  if(head.y < 0) {
+    head.y = 499;
+  }
+  
 }
 
 
@@ -143,6 +173,13 @@ void collision() {
 
   // If the segment is colliding with a piece of food...
      // Increase the amount of food eaten and set foodX and foodY to new random locations.
+     if(head.x == foodX && head.y == foodY) {
+         eaten++;
+         foodX = ((int)random(50)*10);
+         foodY = ((int)random(50)*10);
+         drawFood();
+     }
+     
 }
 
 
