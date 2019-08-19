@@ -59,6 +59,7 @@ head = new Segment(250,250);
   // 11. Use the frameRate(int rate) method to set the rate to 20.
   
   int rate = 20;
+  frameRate(rate);
 
 }
 
@@ -102,16 +103,16 @@ void move() {
   
   switch(direction) {
   case "up":
-    head.y = head.y - 5;
+    head.y = head.y - 10;
     break;
   case "down":
-    head.y = head.y + 5; 
+    head.y = head.y + 10; 
     break;
   case "left":
-    head.x = head.x - 5;
+    head.x = head.x - 10;
     break;
   case "right":
-    head.x = head.x + 5; 
+    head.x = head.x + 10; 
     break;
   }
   
@@ -147,16 +148,16 @@ void keyPressed() {
 
 void checkBoundaries() {
   if(head.x > 500) {
-    head.x = 1;
+    head.x = 10;
   }
   if(head.y > 500) {
-    head.y = 1;
+    head.y = 10;
   }
   if(head.x < 0) {
-    head.x = 499;
+    head.x = 490;
   }
   if(head.y < 0) {
-    head.y = 499;
+    head.y = 490;
   }
   
 }
@@ -191,23 +192,31 @@ void collision() {
  **/
 
 //  1. Create and initialize an ArrayList of Segments. (This will be your snake tail!)
-
+ArrayList <Segment> tail = new ArrayList <Segment>();
 
 // 2. Complete the missing parts of the manageTail method below and call it in the draw method.
 
 void manageTail() {
 
   //Call the drawTail and checkTailCollision methods.
-
+  drawTail();
+  checkTailCollision();
   // Add a new Segment to your ArrayList that has the same X and Y as the head of your snake.
-
+  
+  tail.add(new Segment(head.x,head.y));
+  
   // To keep your tail the right length:
   // while the tail size is greater than the number of food pieces eaten, remove the first Segment in your tail.
-
+  while (tail.size() > eaten) {
+    tail.remove(0);
+  }
 }
 
 void drawTail() {
     // Draw a 10 by 10 rectangle for each Segment in your snake ArrayList.
+    for(int i = 0; i < tail.size(); i++) {
+      rect(tail.get(i).x,tail.get(i).y,10,10);
+    }
 }
 
 
@@ -216,8 +225,11 @@ void drawTail() {
 void checkTailCollision() {
 
   // If your head has the same location as one of your segments...
-
+  for(int i = 0; i < tail.size(); i++) {
+    if(head.x == tail.get(i).x && head.y == tail.get(i).y) {
+    eaten = 1;
+    }
+  }
   // reset your food variable
-
   //Call this method at the beginning of your manageTail method.
 }
